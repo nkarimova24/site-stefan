@@ -8,6 +8,13 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
-        tailwindcss(),
+    tailwindcss(),
     ],
+    server: {
+        host: 'localhost',
+        port: 5173, // Ensure this matches the port in the error message
+        hmr: {
+            host: 'localhost',
+        },
+    },
 });
