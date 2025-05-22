@@ -37,7 +37,7 @@
         </nav>
     </header>
 
-    <main class="container relative">
+    <main class="relative">
         <div class="absolute inset-0 bg-cover bg-top opacity-20" style="background-image: url('{{ asset('background.png') }}'); z-index: -1;"></div>
         @yield('content')
     </main>

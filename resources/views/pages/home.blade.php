@@ -25,7 +25,7 @@
 </div>
 
 <!-- Second Navigation Bar -->
-<nav class=" text-white py-4" style="background-image: url('{{ asset('secondnav.png') }}'); z-index: -1">
+<nav class=" text-white py-4 w-full" style="background-image: url('{{ asset('secondnav.png') }}'); z-index: -1">
     <ul class="flex justify-center space-x-8 gap-40">
         <li><a href="/category1" class="hover:underline">Categorie 1</a></li>
         <li class="border-l border-gray-500 pl-4"><a href="/category2" class="hover:underline">Categorie 2</a></li>
