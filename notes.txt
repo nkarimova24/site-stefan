@@ -1,0 +1,129 @@
+Hey, het leek dus een idee om Stefan zelf de categorieen toe te kunnen voegen.
+Als jou dat ook wat lijkt, heb ik een stappenplan hiervoor:
+
+1. laten we een Model en migration voor 'Category' opstellen
+
+php artisan make:model Category -m
+Bij Category model, voeg 'name' toe bij protected $fillable
+
+En dan voor de category migration
+Voeg je alleen toe: $table->string('name')->unique
+
+Vergeet erna niet te migraten ;) 'php artisan migrate'
+
+2. Update de dashboard view, voeg dit toe 
+
+@extends('layouts.layout')
+@section('content')
+<h1 class="text-white mb-6">Hallo {{ Auth::user()->name }}!</h1>
+
+<!-- Add New Category -->
+<div class="mb-8">
+    <h2 class="text-2xl font-bold text-white mb-4">Manage Categories</h2>
+    <form action="{{ route('categories.store') }}" method="POST" class="bg-gray-800 p-4 rounded-lg shadow-md">
+        @csrf
+        <div class="mb-4">
+            <label for="category_name" class="block text-gray-300 font-medium mb-2">Category Name</label>
+            <input type="text" id="category_name" name="name" class="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-1 focus:ring-lime-200" required>
+        </div>
+        <button type="submit" class="bg-lime-200 hover:bg-lime-400 text-gray font-bold py-2 px-4 rounded-lg transition duration-300">Add Category</button>
+    </form>
+
+    <!-- Display Existing Categories -->
+    <div class="mt-6">
+        <h3 class="text-xl font-bold text-white mb-4">Existing Categories</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @foreach($categories as $category)
+            <div class="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center">
+                <span class="text-white">{{ $category->name }}</span>
+                <form action="{{ route('categories.destroy', $category) }}" method="POST" class="inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded-lg transition duration-300">Delete</button>
+                </form>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+<!-- Add New Portfolio Item -->
+<div class="mb-8">
+    <h2 class="text-2xl font-bold text-white mb-4">Add New Portfolio Item</h2>
+    <form action="{{ route('portfolio.store') }}" method="POST" enctype="multipart/form-data" class="bg-gray-800 p-4 rounded-lg shadow-md">
+        @csrf
+        <div class="mb-4">
+            <label for="title" class="block text-gray-300 font-medium mb-2">Title</label>
+            <input type="text" id="title" name="title" class="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-1 focus:ring-lime-200" required>
+        </div>
+        <div class="mb-4">
+            <label for="description" class="block text-gray-300 font-medium mb-2">Description</label>
+            <textarea id="description" name="description" class="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-1 focus:ring-lime-200" required></textarea>
+        </div>
+        <div class="mb-4">
+            <label for="category" class="block text-gray-300 font-medium mb-2">Category</label>
+            <select id="category" name="category" class="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-1 focus:ring-lime-200" required>
+                <option value="" disabled selected>Select a category</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->name }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="image" class="block text-gray-300 font-medium mb-2">Image</label>
+            <input type="file" id="image" name="image" class="w-full p-3 rounded-lg bg-gray-700 text-white" required>
+        </div>
+        <button type="submit" class="bg-lime-200 hover:bg-lime-400 text-gray font-bold py-2 px-4 rounded-lg transition duration-300">Add Item</button>
+    </form>
+</div>
+
+@endsection
+
+3. Controller! Maak een CategoryController artisan
+php artisan make:controller CategoryController --resource
+
+Hierbij hoef je voor nu alleen de store-function en destroy-function
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories'
+        ]);
+
+        Category::create($request->only('name'));
+
+        return redirect()->back()->with('success', 'Category created successfully');
+    }
+
+        public function destroy(Category $category)
+    {
+        $category->delete();
+        return redirect()->back()->with('success', 'Category deleted successfully');
+    }
+
+    4. Bij PortfolioController, moet je nog 'category' toevoegen
+
+    Onder $validated = $request 
+    'category' => 'required|string|exists:categories,name', 
+
+    En dan bij PortfolioItem::create 
+    'category' => $validated['category'], 
+    
+    5. Voeg de routes toe in web.php
+
+    Update de Admin Dashboard route naar dit
+
+    Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        $categories = \App\Models\Category::all();
+        return view('admin.dashboard', compact('categories'));
+    })->name('dashboard');
+
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+});
+
+
+En vergeet ook niet bovenaan
+
+use App\Http\Controllers\CategoryController;
