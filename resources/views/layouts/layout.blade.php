@@ -24,16 +24,16 @@
                 <a href="{{ route('dashboard') }}" class="ml-auto mr-10 hover:scale-110 transition transform duration-300 bg-white rounded-full text-black p-2">
                     Dashboard ({{ Auth::user()->name }})
                 </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 float-right mr-10">
+                        Logout
+                    </button>
+                </form>
             @else
                 <!-- If the user is not logged in -->
                 <a href="{{ route('login') }}" class="ml-auto mr-10 hover:scale-110 transition transform duration-300 bg-white rounded-full text-black p-2">Login</a>
             @endif
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 float-right mr-10">
-                    Logout
-                </button>
-            </form>
         </nav>
     </header>
 
