@@ -9,9 +9,9 @@
 </head>
 <body class="bg-black text-gray-800 flex flex-col min-h-screen">
     <header class="text-white">
-        <nav class="w-full flex items-center" style="background-image: url('{{ asset('nav.png') }}'); background-size: cover; background-position: center;">
+        <nav class="w-full flex items-center" style="background-image: url('{{ asset('images/nav.png') }}'); background-size: cover; background-position: center;">
             <a href="/">
-                <img src="{{ asset('stefanbuslogo.png') }}" alt="stefanbuslogo" class="mr-10 h-20 w-70 rounded-full">
+                <img src="{{ asset('images/stefanbuslogo.png') }}" alt="stefanbuslogo" class="mr-10 h-20 w-70 rounded-full">
             </a>
             <ul class="flex space-x-4 gap-10">
                 <li><a href="/" class="inline-block hover:scale-110 transition transform duration-300">Home</a></li>
@@ -38,7 +38,7 @@
     </header>
 
     <main class="relative">
-        <div class="absolute inset-0 bg-cover bg-top opacity-20" style="background-image: url('{{ asset('background.png') }}'); z-index: -1;"></div>
+        <div class="absolute inset-0 bg-cover bg-top opacity-20" style="background-image: url('{{ asset('images/background.png') }}'); z-index: -1;"></div>
         @yield('content')
     </main>
 

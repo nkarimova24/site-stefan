@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\CategoryController;
+use App\Models\Category;
 
 Route::get('/', function () {
-    return view('pages.home');
+    $categories = Category::all();
+    return view('pages.home', compact('categories'));
 });
 Route::get('/about', function () {
     return view('about.index');
@@ -34,11 +37,18 @@ Route::post('/logout', function () {
 })->name('logout');
 
 // Admin dashboard (protected by auth middleware)
-Route::get('/dashboard', [PortfolioController::class, 'index'])
-    ->middleware('auth')
-    ->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        $categories = \App\Models\Category::all();
+        return view('admin.dashboard', compact('categories'));
+    })->name('dashboard');
+
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+});
 
 // Protect all PortfolioController resource routes with auth middleware
 Route::resource('portfolio', PortfolioController::class)->except(['index'])->middleware('auth');
+Route::delete('/portfolio/{portfolio}', [PortfolioController::class, 'destroy'])->name('portfolio.destroy');
 
 

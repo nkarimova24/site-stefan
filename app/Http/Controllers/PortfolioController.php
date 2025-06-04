@@ -11,7 +11,8 @@ class PortfolioController extends Controller
     public function publicIndex()
     {
         $portfolioItems = PortfolioItem::all();
-        return view('portfolio.index', compact('portfolioItems'));
+        $categories = \App\Models\Category::all();
+        return view('portfolio.index', compact('portfolioItems', 'categories'));
     }
 
     // Admin dashboard

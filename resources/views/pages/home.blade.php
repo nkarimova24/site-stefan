@@ -5,13 +5,13 @@
     <div class="overflow-hidden relative">
         <!-- Slides -->
         <div class="mySlides">
-            <img src="{{ asset('slide1.jpg') }}" alt="Slide 1" class="w-full object-cover h-96">
+            <img src="{{ asset('images/slide1.jpg') }}" alt="Slide 1" class="w-full object-cover h-96">
         </div>
         <div class="mySlides">
-            <img src="{{ asset('slide2.jpg') }}" alt="Slide 2" class="w-full object-cover h-96">
+            <img src="{{ asset('images/slide2.jpg') }}" alt="Slide 2" class="w-full object-cover h-96">
         </div>
         <div class="mySlides">
-            <img src="{{ asset('slide3.jpg') }}" alt="Slide 3" class="w-full object-cover h-96">
+            <img src="{{ asset('images/slide3.jpg') }}" alt="Slide 3" class="w-full object-cover h-96">
         </div>
     </div>
 
@@ -25,13 +25,15 @@
 </div>
 
 <!-- Second Navigation Bar -->
-<nav class=" text-white py-4 w-full" style="background-image: url('{{ asset('secondnav.png') }}'); z-index: -1">
-    <ul class="flex justify-center space-x-8 gap-40">
-        <li><a href="/category1" class="hover:underline">Categorie 1</a></li>
-        <li class="border-l border-gray-500 pl-4"><a href="/category2" class="hover:underline">Categorie 2</a></li>
-        <li class="border-l border-gray-500 pl-4"><a href="/category3" class="hover:underline">Categorie 3</a></li>
-        <li class="border-l border-gray-500 pl-4"><a href="/category4" class="hover:underline">Categorie 4</a></li>
-        <li class="border-l border-gray-500 pl-4"><a href="/category5" class="hover:underline">Categorie 5</a></li>
+<nav class="text-white py-4 w-full" style="background-image: url('{{ asset('images/secondnav.png') }}'); z-index: -1">
+     <ul class="flex justify-center space-x-8 gap-40">
+        @forelse($categories as $category)
+            <li>
+                <a href="portfolio/#category-{{ \Illuminate\Support\Str::slug($category->name) }}" class="hover:underline">{{ $category->name }}</a>
+            </li>
+        @empty
+            <li>Geen categorieën beschikbaar</li>
+        @endforelse
     </ul>
 </nav>
 
