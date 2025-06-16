@@ -12,20 +12,24 @@
         @endforelse
     </ul>
 </nav>
-<h1 class="text-white text-center text-4xl">Portfolio</h1>
+<h1 class="text-white text-center text-6xl mb-20 mt-20">Portfolio</h1>
 <!-- Portfolio Items Grouped by Category -->
 @php
     $grouped = $portfolioItems->groupBy('category');
 @endphp
 
 @foreach($grouped as $category => $items)
-    <h2 id="category-{{ \Illuminate\Support\Str::slug($category) }}" class="text-2xl text-lime-200 mt-8 mb-4">{{ $category }}</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div style="background-image: url('{{ asset('images/nav.png') }}'); background-size: cover; background-position: center;" class="p-4">
+    <h2 id="category-{{ \Illuminate\Support\Str::slug($category) }}" class="text-5xl text-white mt-8 mb-4 text-center">{{ $category }}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
         @foreach ($items as $item)
-            <div class="p-4 rounded-lg shadow-md relative" style="background-image: url('{{ asset('images/nav.png') }}'); background-size: cover; background-position: center;">
+            <div class="p-4 rounded-lg shadow-md relative" x-data="{ open: false }">
                 <img src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="w-full h-auto object-cover rounded-lg mb-4">
                 <h2 class="text-xl font-semibold text-white">{{ $item->title }}</h2>
-                <p class="text-gray-300">open description &darr;</p>
+                <button @click="open = !open" class="text-gray-300 underline focus:outline-none">open description &darr;</button>
+                <div x-show="open" class="mt-2 text-white bg-black/70 p-2 rounded transition-all duration-300">
+                    {{ $item->description }}
+                </div>
                 @auth
                     <form action="{{ route('portfolio.destroy', $item) }}" method="POST" class="absolute top-2 right-2">
                         @csrf
@@ -36,5 +40,6 @@
             </div>
         @endforeach
     </div>
+</div>
 @endforeach
 @endsection

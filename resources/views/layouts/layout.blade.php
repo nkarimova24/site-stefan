@@ -6,6 +6,7 @@
     <title>@yield('title', 'My Website')</title>
     @vite('resources/css/app.css')
     <script src="{{ asset('slideshow.js') }}"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 <body class="bg-black text-gray-800 flex flex-col min-h-screen">
     <header class="text-white">
