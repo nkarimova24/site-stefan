@@ -17,13 +17,12 @@
 @php
     $grouped = $portfolioItems->groupBy('category');
 @endphp
-
 @foreach($grouped as $category => $items)
-<div style="background-image: url('{{ asset('images/nav.png') }}'); background-size: cover; background-position: center;" class="p-4">
+<div class="p-4">
     <h2 id="category-{{ \Illuminate\Support\Str::slug($category) }}" class="text-5xl text-white mt-8 mb-4 text-center">{{ $category }}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
         @foreach ($items as $item)
-            <div class="p-4 rounded-lg shadow-md relative" x-data="{ open: false }">
+            <div class="p-4 relative" x-data="{ open: false }">
                 <img src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="w-full h-auto object-cover rounded-lg mb-4">
                 <h2 class="text-xl font-semibold text-white">{{ $item->title }}</h2>
                 <button @click="open = !open" class="text-gray-300 underline focus:outline-none">open description &darr;</button>
