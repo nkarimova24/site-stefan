@@ -25,14 +25,16 @@
 </div>
 
 <!-- Second Navigation Bar -->
-<nav class="text-white py-4 w-full" style="background-image: url('{{ asset('images/secondnav.png') }}'); z-index: -1">
-     <ul class="flex justify-center space-x-8 gap-40">
+<nav class="text-white py-2 sm:py-4 w-full" style="background-image: url('{{ asset('images/secondnav.png') }}'); z-index: -1">
+    <ul class="flex w-full justify-between divide-x-2 divide-double divide-white-200">
         @forelse($categories as $category)
-            <li>
-                <a href="portfolio/#category-{{ \Illuminate\Support\Str::slug($category->name) }}" class="hover:underline">{{ $category->name }}</a>
+            <li class="flex-1 text-center px-1 sm:px-2">
+                <a href="portfolio/#category-{{ \Illuminate\Support\Str::slug($category->name) }}" class="hover:underline block w-full text-xs sm:text-base">
+                    {{ $category->name }}
+                </a>
             </li>
         @empty
-            <li>Geen categorieën beschikbaar</li>
+            <li class="flex-1 text-center">Geen categorieën beschikbaar</li>
         @endforelse
     </ul>
 </nav>
