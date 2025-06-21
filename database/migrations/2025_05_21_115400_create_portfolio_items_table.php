@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('category'); // Add the category column
             $table->string('title');
             $table->text('description');
-            $table->string('image');
+            $table->string('image')->nullable(); // Make the image column nullable
             $table->timestamps();
         });
     }

@@ -39,7 +39,7 @@
 
 <!-- Text Introduction -->
 <div class="w-3/4 mx-auto mt-8 h-64">
-    <img src="{{ asset('temporary') }}" alt="profile" class="h-80 w-80 border bg-gray-500 float-left rounded-full mx-auto">
+    <img src="{{ asset('images/profielfoto.jpg') }}" alt="profile" class="h-60 w-100 border bg-gray-500 float-left mx-auto mr-8">
     <h1 class="text-4xl font-bold text-white">Welkom op mijn website!</h1>
     <p class="mt-4 text-lg text-gray-300">Hier vind je mijn portfolio en meer informatie over mij.</p>
 </div>

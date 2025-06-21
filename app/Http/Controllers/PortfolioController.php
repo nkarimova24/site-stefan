@@ -38,17 +38,21 @@ class PortfolioController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             'category' => 'required|string|max:255', // Ensure category is validated
         ]);
 
-        $imagePath = $request->file('image')->store('portfolio', 'public');
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('portfolio', 'public');
+        } else {
+            $imagePath = null;
+        }
 
         PortfolioItem::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'image' => $imagePath,
             'category' => $validated['category'], // Include category in the insert
+            'image' => $imagePath,
         ]);
 
         return redirect()->route('portfolio.index')->with('success', 'Portfolio item added successfully!');
@@ -79,7 +83,7 @@ class PortfolioController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         $item = PortfolioItem::findOrFail($id);

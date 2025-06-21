@@ -20,20 +20,20 @@
 @foreach($grouped as $category => $items)
 <div class="p-4">
     <h2 id="category-{{ \Illuminate\Support\Str::slug($category) }}" class="text-5xl text-white mt-8 mb-4 text-center">{{ $category }}</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+    <div class="columns-1 sm:columns-2 md:columns-3 gap-4 p-4">
         @foreach ($items as $item)
-            <div class="p-4 relative" x-data="{ open: false }">
-                <img src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="w-full h-auto object-cover rounded-lg mb-4">
+            <div class="relative mb-4 break-inside-avoid rounded-lg shadow-md bg-black/70 p-2">
+                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="w-full h-auto object-cover rounded-lg mb-2">
                 <h2 class="text-xl font-semibold text-white">{{ $item->title }}</h2>
-                <button @click="open = !open" class="text-gray-300 underline focus:outline-none">open description &darr;</button>
-                <div x-show="open" class="mt-2 text-white bg-black/70 p-2 rounded transition-all duration-300">
-                    {{ $item->description }}
-                </div>
+                <p class="text-gray-300">{{ $item->description }}</p>
                 @auth
-                    <form action="{{ route('portfolio.destroy', $item) }}" method="POST" class="absolute top-2 right-2">
+                    <form action="{{ route('portfolio.destroy', $item) }}" method="POST" class="absolute top-2 right-2 z-10"
+                          onsubmit="return confirm('Weet je zeker dat je dit item wilt verwijderen?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded text-xs">Verwijder</button>
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded text-xs shadow-lg">
+                            Verwijder
+                        </button>
                     </form>
                 @endauth
             </div>
