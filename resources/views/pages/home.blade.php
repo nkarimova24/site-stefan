@@ -25,11 +25,23 @@
 </div>
 
 <!-- Second Navigation Bar -->
-<nav class="text-white py-2 sm:py-4 w-full" style="background-image: url('{{ asset('images/secondnav.png') }}'); z-index: -1">
-    <ul class="flex w-full justify-between divide-x-2 divide-double divide-white-200">
+<nav class="text-white py-2 w-full flex justify-center" style="background-image: url('{{ asset('images/secondnav.png') }}'); z-index: -1">
+    <!-- Mobile: dropdown -->
+    <div class="block sm:hidden w-full max-w-xs mx-auto">
+        <select onchange="if(this.value) window.location.href=this.value" class="w-full bg-black/80 text-white rounded p-2 text-center">
+            <option value="" class="">Kies een categorie</option>
+            @foreach($categories as $category)
+                <option value="portfolio/#category-{{ \Illuminate\Support\Str::slug($category->name) }}">
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <!-- Desktop: gewone lijst -->
+    <ul class="hidden sm:flex w-full justify-between divide-x-2 divide-double divide-white">
         @forelse($categories as $category)
-            <li class="flex-1 text-center px-1 sm:px-2">
-                <a href="portfolio/#category-{{ \Illuminate\Support\Str::slug($category->name) }}" class="hover:underline block w-full text-xs sm:text-base">
+            <li class="flex-1 text-center px-2">
+                <a href="portfolio/#category-{{ \Illuminate\Support\Str::slug($category->name) }}" class="hover:underline block w-full text-base">
                     {{ $category->name }}
                 </a>
             </li>
@@ -40,9 +52,9 @@
 </nav>
 
 <!-- Text Introduction -->
-<div class="w-3/4 mx-auto mt-8 h-64">
-    <img src="{{ asset('images/profielfoto.jpg') }}" alt="profile" class="h-60 w-100 border bg-gray-500 float-left mx-auto mr-8">
+<div class="w-3/4 mx-auto mt-8">
+    <img src="{{ asset('images/profielfoto.jpg') }}" alt="profile" class=" h-50 w-auto ms:h-60 ms:w-100 bg-gray-500 float-left mx-auto mr-8">
     <h1 class="text-4xl font-bold text-white">Welkom op mijn website!</h1>
-    <p class="mt-4 text-lg text-gray-300">Hier vind je mijn portfolio en meer informatie over mij.</p>
+    <p class="mt-4 mb-16 text-lg text-gray-300">Hier vind je mijn portfolio en meer informatie over mij.</p>
 </div>
 @endsection
